@@ -15,7 +15,7 @@ class contact {
         return daysRemaining;
     }
 
-    createHTML(parentNode) {
+    createHTML() {
         const div = document.createElement("div");
     }
 }
