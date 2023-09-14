@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Expense Tracker - CS4241</title>
+    <meta charset="utf-8" />
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Kanit"
+    />
+    <link
+      rel="icon"
+      href="images/Worcester-Polytechnic-Institute-Engineers-logo-1.webp"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Expense Tracker</h1>
+    </header>
+    <form class="expenseBox">
+      <input
+        id="expenseName"
+        type="text"
+        name="expenseName"
+        placeholder="Name"
+      />
+      <input
+        id="expenseNumber"
+        type="text"
+        name="expenseNumber"
+        placeholder="Amount"
+      />
+      <input id="expenseDate" type="date" name="expenseDate" />
+      <button id="createButton">Create</button>
+    </form>
+    <table id="expenseTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Amount ($)</th>
+          <th>Due Date</th>
+          <th>Remaining Days</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody class="expenseList" id="expenseList"></tbody>
+    </table>
+  </body>
+</html>
