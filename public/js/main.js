@@ -1,8 +1,8 @@
 window.onload = function () {
   // On load update the table
-
   updateContacts();
-
+  initButtons();
+  
 };
 
 const updateContacts = async function () {
@@ -15,7 +15,6 @@ const updateContacts = async function () {
   const response = await fetch("/update", {
     method: "GET",
   });
-
 
   const contacts = await response.json();
   console.log(contacts);
@@ -52,4 +51,25 @@ const removeContact = async function (id) {
 
   // Update the table
   updateContacts();
+}
+
+const hideForm = function () {
+  const form = document.getElementById("contactForm");
+  form.style.display = "none";
+}
+
+const showForm = function () {
+  const form = document.getElementById("contactForm");
+  form.style.display = "block";
+}
+
+const initButtons = function () {
+  const addButton = document.getElementById("addButton");
+  addButton.onclick = showForm;
+
+  const cancelButton = document.getElementById("cancelButton");
+  cancelButton.onclick = hideForm;
+
+  const saveButton = document.getElementById("saveButton");
+  saveButton.onclick = addContact;
 }
