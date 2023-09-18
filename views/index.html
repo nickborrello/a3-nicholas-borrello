@@ -11,36 +11,37 @@
     />
   </head>
   <body>
-    <div id="contactList" class="top-bar">
-      <h1>Contacts</h1>
-      <button id="createButton" class="createButton">Create Contact</button>
+    <div>
+      <div id="contactHeader" class="top-bar">
+        <h1>Contacts</h1>
+        <button id="createButton" class="createButton">Create Contact</button>
+      </div>
+      <div id="contactList" class="contact-list"></div>
     </div>
     <form id="contactForm" class="hidden popup-form">
-      <div class="vertical-box wrapper-main">
-        <div class="horizontal-box">
-          <img src="../images/default_profile.png" />
-          <input type="file" id="photo" placeholder="Photo" class="hidden" />
-          <div class="vertical-box">
-            <input type="text" id="name" placeholder="Name" />
-            <input type="text" id="email" placeholder="Email" />
-            <input type="text" id="phone" placeholder="Phone" />
-          </div>
-        </div>
-        <div class="vertical-box">
-          <div class="vertical-box">
-            <div class="horizontal-box">
-              <input type="text" id="address" placeholder="Address" />
-              <input type="text" id="city" placeholder="City" />
-            </div>
-            <div class="horizontal-box">
-              <input type="text" id="state" placeholder="State" />
-              <input type="text" id="zip" placeholder="Zip" />
-            </div>
-          </div>
-          <div class="horizontal-box">
-            <button id="cancelButton">Cancel</button>
-            <button id="submitButton" class="createButton">Create</button>
-          </div>
+      <h4>Create Contact</h4>
+      <hr />
+      <div class="form-spacer">
+        <h5>Photo</h5>
+        <img src="../images/default_profile.png" />
+        <input type="file" id="photo" placeholder="Photo" class="hidden" />
+        <h5>Name</h5>
+        <input type="text" id="firstName" placeholder="First Name" />
+        <input type="text" id="lastName" placeholder="Last Name" />
+        <h5>Contact Info</h5>
+        <input type="text" id="phone" placeholder="Phone" />
+        <input type="text" id="email" placeholder="Email" />
+        <h5>Date of Birth</h5>
+        <input type="date" id="dateOfBirth" placeholder="Birthday" />
+        <h5>Address</h5>
+        <input type="text" id="streetAddress" placeholder="Street Address" />
+        <input type="text" id="city" placeholder="City" />
+        <input type="text" id="state" placeholder="State" />
+        <input type="text" id="zipCode" placeholder="Zip" />
+        <hr />
+        <div class="form-section-1">
+          <button id="cancelButton">Cancel</button>
+          <button id="submitButton" class="createButton">Create</button>
         </div>
       </div>
     </form>

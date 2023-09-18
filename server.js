@@ -12,6 +12,8 @@ const uri = "mongodb+srv://" + process.env.NAME + ":" + process.env.PASSWORD + "
 console.log(uri)
 const client = new MongoClient( uri )
 
+
+
 let collection = null
 
 async function run() {
@@ -48,17 +50,6 @@ async function run() {
     })
     res.json(result)
   })
-
-  // Update the servers data with the servers
-  app.post('/update', async (req, res) => {
-    const result = await collection.updateOne(
-      { _id: mongodb.ObjectId(req.body._id) },
-      { $set: { name: req.body.name } }
-    )
-
-    res.json(result)
-  })
-
 }
 
 run()

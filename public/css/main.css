@@ -24,9 +24,18 @@ body {
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 340px;
-  height: 280px;
+  width: fit-content;
+  height: fit-content;
   z-index: 100;
+  text-align: left;
+}
+
+.form-spacer {
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: 10px;
 }
 
 .popup-form img {
@@ -36,24 +45,6 @@ body {
   border-width: 3px;
   border-style: solid;
   border-color: darkslateblue;
-}
-
-.vertical-box {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
-  width: auto;
-  gap: 10px;
-}
-
-.horizontal-box {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  justify-content: center;
-  width: auto;
-  gap: 10px;
 }
 
 .top-bar {
@@ -119,8 +110,38 @@ input {
   text-decoration: none;
   transition: all 0.2s ease-in-out;
   height: fit-content;
+  color-scheme: dark;
+  width: 100%;
 }
 
 .blur-page {
   filter: blur(5px);
+}
+
+.form-section-1 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: left;
+  width: 100%;
+  gap: 10px;
+}
+
+.form-info-name {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: left;
+  width: 120px;
+  gap: 10px;
+}
+
+form h4, h5 {
+  height: fit-content;
+  margin: 0px;
+}
+
+hr {
+  width: 100%;
+  color: #e1e1e1;
 }
