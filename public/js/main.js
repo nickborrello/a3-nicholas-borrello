@@ -2,16 +2,13 @@ window.onload = function () {
   // On load update the table
   updateContacts();
   initButtons();
-  
+  hideForm();
+
 };
 
 const updateContacts = async function () {
 
-  // Clear the expenses
-  let contactList = document.getElementById("contactList");
-  contactList.innerHTML = '';
-
-  // GET the current expenses
+  // GET the current contacts
   const response = await fetch("/update", {
     method: "GET",
   });
@@ -54,22 +51,30 @@ const removeContact = async function (id) {
 }
 
 const hideForm = function () {
+  // Show the create contact button
+  const button = document.getElementById("createButton");
+  button.classList.remove("hidden");
+  // Hide the form
   const form = document.getElementById("contactForm");
-  form.style.display = "none";
+  form.classList.add("hidden");
 }
 
 const showForm = function () {
+  // Hide the create contact button
+  const button = document.getElementById("createButton");
+  button.classList.add("hidden");
+  // Show the form
   const form = document.getElementById("contactForm");
-  form.style.display = "block";
+  form.classList.remove("hidden");
 }
 
 const initButtons = function () {
-  const addButton = document.getElementById("addButton");
+  const addButton = document.getElementById("createButton");
   addButton.onclick = showForm;
 
   const cancelButton = document.getElementById("cancelButton");
   cancelButton.onclick = hideForm;
 
-  const saveButton = document.getElementById("saveButton");
-  saveButton.onclick = addContact;
+  const submitButton = document.getElementById("submitButton");
+  submitButton.onclick = addContact;
 }
