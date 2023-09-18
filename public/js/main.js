@@ -5,7 +5,6 @@ window.onload = function () {
   hideForm();
 
 };
-
 const updateContacts = async function () {
 
   // GET the current contacts

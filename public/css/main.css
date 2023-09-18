@@ -41,7 +41,7 @@ body {
 .vertical-box {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   width: auto;
   gap: 10px;
@@ -50,7 +50,7 @@ body {
 .horizontal-box {
   display: flex;
   flex-direction: row;
-  align-items: top;
+  align-items: stretch;
   justify-content: center;
   width: auto;
   gap: 10px;
@@ -119,14 +119,6 @@ input {
   text-decoration: none;
   transition: all 0.2s ease-in-out;
   height: fit-content;
-}
-
-.small-input {
-  width: 175px;
-}
-
-.big-input {
-  width: 290px;
 }
 
 .blur-page {

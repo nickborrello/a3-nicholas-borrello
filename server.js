@@ -6,7 +6,10 @@ app.use( express.static( "public" ) )
 app.use( express.static("views") )
 app.use( express.json() )
 
-const uri = "mongodb+srv://nvborrello:zi7Nhk9VtwcRjeVW@a3-nicholas-borrello.drurqmd.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp"
+require('dotenv').config();
+
+const uri = "mongodb+srv://" + process.env.NAME + ":" + process.env.PASSWORD + "@a3-nicholas-borrello.drurqmd.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp"
+console.log(uri)
 const client = new MongoClient( uri )
 
 let collection = null
