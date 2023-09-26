@@ -9,22 +9,30 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Kanit"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
   </head>
   <body>
-    <div>
+    <div id="parent-div">
       <div id="contactHeader" class="top-bar">
         <h1>Contacts</h1>
-        <button id="createButton" class="createButton">Create Contact</button>
+        <div>
+          <button id="createButton" class="createButton">Create Contact</button>
+          <button id="logoutButton" class="createButton">Logout</button>
+        </div>
       </div>
       <div id="contactList" class="contact-list"></div>
     </div>
     <form id="contactForm" class="hidden popup-form">
-      <h4>Create Contact</h4>
+      <h3>Create Contact</h4>
       <hr />
       <div class="form-spacer">
-        <h5>Photo</h5>
-        <img src="../images/default_profile.png" />
-        <input type="file" id="photo" placeholder="Photo" class="hidden" />
         <h5>Name</h5>
         <input type="text" id="firstName" placeholder="First Name" />
         <input type="text" id="lastName" placeholder="Last Name" />
@@ -45,5 +53,39 @@
         </div>
       </div>
     </form>
+    <template id="contact-card">
+      <div class="contact-card">
+        <div class="contact-card-header">
+          <div class="name-div">
+            <h3 class="contact-name" id="cardFirstName">John</h3>
+            <h3 class="contact-name" id="cardLastName">Doe</h3>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>DOB</th>
+              <th>Address</th>
+              <th>Last Edited</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="tablePhone" width="15%"></td>
+              <td id="tableEmail" width="20%"></td>
+              <td id="tableDateOfBirth" width="12%"></td>
+              <td id="tableStreetAddress" width="25%"></td>
+              <td id="tableLastEdited" width="12%"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="icon-div" class="icon-div">
+          <button class="btn" id="editButton"><i class="fa-solid fa-pen-to-square"></i></button>
+          <button class="btn" id="deleteButton"><i class="fa fa-trash"></i></button>
+        </div>
+      </div>
+    </template>
   </body>
 </html>

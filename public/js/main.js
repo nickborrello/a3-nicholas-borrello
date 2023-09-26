@@ -5,6 +5,7 @@ window.onload = function () {
   hideForm();
 
 };
+
 const updateContacts = async function () {
 
   // GET the current contacts
@@ -14,26 +15,31 @@ const updateContacts = async function () {
 
   const contacts = await response.json();
 
+  console.log(contacts);
+
+  // Clear the list
+  const list = document.getElementById("contactList");
+  list.innerHTML = "";
+
   // for each contact in contacts
   for(let i = 0; i < contacts.length; i++) {
-    // create a new contact object
-    const contact = contacts[i];
 
     // create the div element and add it to the parent element
-    const div = document.createElement("div");
-    document.getElementById("contactList").appendChild(div);
-
-    // add the contact information to the div
-    div.innerHTML = 
-    '<p>' + contact.firstName + ' ' + contact.lastName + '</p>' +
-    '<p>' + contact.phone + '</p>' +
-    '<p>' + contact.email + '</p>' +
-    '<p>' + contact.dateOfBirth + '</p>' +
-    '<p>' + contact.streetAddress + '</p>' +
-    '<p>' + contact.city + ', ' + contact.state + ' ' + contact.zipCode + '</p>' +
-    '<button type="button" class="btn btn-danger" onclick="removeContact(\'' + contact._id + '\')">Remove</button>';
+    let temp = document.getElementById("contact-card");
+    let content = temp.content;
+    content.getElementById("cardFirstName").innerHTML = contacts[i].firstName;
+    content.getElementById("cardLastName").innerHTML = contacts[i].lastName;
+    content.getElementById("tablePhone").innerHTML = contacts[i].phone;
+    content.getElementById("tableEmail").innerHTML = contacts[i].email;
+    content.getElementById("tableDateOfBirth").innerHTML = contacts[i].dateOfBirth;
+    content.getElementById("tableStreetAddress").innerHTML = contacts[i].streetAddress + ", " + contacts[i].city + ", " + contacts[i].state + ", " + contacts[i].zipCode;
+    content.getElementById("tableLastEdited").innerHTML = contacts[i].lastEdited + " day(s) ago";
+    content.getElementById("deleteButton").onclick = function() {removeContact(contacts[i]._id)};
+    let newChild = content.cloneNode(true);
+    newChild.getElementById("deleteButton").onclick = function() {removeContact(contacts[i]._id)};
+    newChild.getElementById("editButton").onclick = function() {editContact(contacts[i]._id)};
+    document.getElementById("contactList").appendChild(newChild);
   }
-  console.log(JSON.stringify(contacts));
 };
 
 const addContact = async function () {
@@ -61,7 +67,7 @@ const addContact = async function () {
   updateContacts();
 }
 
-const removeContact = async function (id) {
+async function removeContact(id) {
   // POST the data to the server
   const response = await fetch("/remove", {
     method: "POST",
@@ -108,4 +114,12 @@ const initButtons = function () {
 
   const submitButton = document.getElementById("submitButton");
   submitButton.onclick = addContact;
+}
+
+const daysUntilBirthday = function () {
+  const today = new Date();
+  const daysRemaining = Math.ceil(
+      (this.birthday - today) / (1000 * 60 * 60 * 24)
+  );
+  return daysRemaining;
 }
