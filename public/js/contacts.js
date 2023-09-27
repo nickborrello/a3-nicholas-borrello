@@ -105,6 +105,14 @@ const showForm = function () {
   list.classList.add("blur-page");
 }
 
+const daysUntilBirthday = function () {
+  const today = new Date();
+  const daysRemaining = Math.ceil(
+      (this.birthday - today) / (1000 * 60 * 60 * 24)
+  );
+  return daysRemaining;
+}
+
 const initButtons = function () {
   const addButton = document.getElementById("createButton");
   addButton.onclick = showForm;
@@ -114,12 +122,5 @@ const initButtons = function () {
 
   const submitButton = document.getElementById("submitButton");
   submitButton.onclick = addContact;
-}
 
-const daysUntilBirthday = function () {
-  const today = new Date();
-  const daysRemaining = Math.ceil(
-      (this.birthday - today) / (1000 * 60 * 60 * 24)
-  );
-  return daysRemaining;
 }

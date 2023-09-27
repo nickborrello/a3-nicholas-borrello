@@ -2,24 +2,30 @@ const express = require( "express" ),
   { MongoClient } = require("mongodb"),
   { ObjectId } = require("mongodb"),
   app = express();
+const authRoutes = require("./routes/auth-routes");
+const passportSetup = require("./config/passport-setup");
+const jsSHA = require("jssha");
 
-app.use( express.static( "public" ) )
-app.use( express.static("views") )
-app.use( express.json() )
+app.use( express.static( "public" ) );
+app.use( express.static("views") );
+app.use( express.json() );
+app.use(  '/auth', authRoutes );
 
 require('dotenv').config();
 
 const uri = "mongodb+srv://" + process.env.NAME + ":" + process.env.PASSWORD + "@a3-nicholas-borrello.drurqmd.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp"
-console.log(uri)
-const client = new MongoClient( uri )
+console.log(uri);
+const client = new MongoClient( uri );
 
 
 
 let collection = null
+let users = null
 
 async function run() {
   await client.connect()
   collection = await client.db("a3-nicholas-borrello").collection("Contacts")
+  users = await client.db("a3-nicholas-borrello").collection("Users")
 
   // Check the connection
   app.use((req, res, next) => {
@@ -29,6 +35,22 @@ async function run() {
       res.status(503).send()
     }
   })
+
+  app.get("/", (req, res) => {
+    res.redirect("/login");
+  });
+
+  app.get("/contacts", (req, res) => {
+    res.sendFile(__dirname + "/views/contacts.html");
+  });
+
+  app.get("/login", (req, res) => {
+    res.sendFile(__dirname + "/views/login.html");
+  });
+
+  app.get("/register", (req, res) => {
+    res.sendFile(__dirname + "/views/register.html");
+  });
 
   // Get the database contacts table for a specific user
   app.get("/docs", async(req, res) => {
@@ -77,49 +99,63 @@ async function run() {
     })
     res.json(result)
   })
-}
 
-// Edit the req.body._id from the database table
-app.post('/edit', async (req, res) => {
-  const result = await collection.updateOne({
-    _id: new ObjectId(req.body._id)
-  }, {
-    $set: {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      phone: req.body.phone,
-      email: req.body.email,
-      dateOfBirth: req.body.dateOfBirth,
-      streetAddress: req.body.streetAddress,
-      city: req.body.city,
-      state: req.body.state,
-      zipCode: req.body.zipCode,
-      lastEdited: new Date()
+    // Edit the req.body._id from the database table
+  app.post('/edit', async (req, res) => {
+    const result = await collection.updateOne({
+      _id: new ObjectId(req.body._id)
+    }, {
+      $set: {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phone: req.body.phone,
+        email: req.body.email,
+        dateOfBirth: req.body.dateOfBirth,
+        streetAddress: req.body.streetAddress,
+        city: req.body.city,
+        state: req.body.state,
+        zipCode: req.body.zipCode,
+        lastEdited: new Date()
+      }
+    })
+    res.json(result)
+  })
+
+  // Check the login credentials
+  app.post('/login/attempt', async (req, res) => {
+    var pwdObj = req.body.password;
+    var hashObj = new jsSHA("SHA-256", "TEXT", {numRounds: 1});
+    hashObj.update(pwdObj);
+    var hash = hashObj.getHash("HEX");
+    pwdObj = hash;
+    const result = await collection.findOne({
+      username: req.body.username,
+      password: hash
+    })
+    res.json(result)
+  })
+
+  // Create a new user in the database
+  app.post('/register/create', async (req, res) => {
+    // Hash the password
+    try {
+      var pwdObj = req.body.password;
+      var hashObj = new jsSHA("SHA-256", "TEXT", {numRounds: 1});
+      hashObj.update(pwdObj);
+      var hash = hashObj.getHash("HEX");
+      pwdObj = hash;
+      users.insertOne({
+        username: req.body.username,
+        password: pwdObj
+      })
+      console.log("User created")
+      res.redirect("/login");
+    } catch {
+      console.log("Error creating user")
+      res.redirect("/register");
     }
   })
-  res.json(result)
-})
-
-// Check the login credentials
-app.post('/login', async (req, res) => {
-  const hashedPassword = crypto.createHash('sha256').update('THISISJUSTSOMESALTFORHASH' + req.body.password).digest('base64');
-  const result = await collection.findOne({
-    username: req.body.username,
-    password: hashedPassword
-  })
-  res.json(result)
-})
-
-// Create a new user in the database
-app.post('/createUser', async (req, res) => {
-  // Hash the password
-  const hashedPassword = crypto.createHash('sha256').update('THISISJUSTSOMESALTFORHASH' + req.body.password).digest('base64');
-  const result = await collection.insertOne({
-    username: req.body.username,
-    password: hashedPassword
-  })
-  res.json(result)
-})
+}
 
 run()
 
