@@ -148,7 +148,7 @@ async function run() {
         username: req.body.username,
         password: pwdObj
       })
-      console.log("User created")
+      console.log("User created: "+req.body.username+" "+pwdObj)
       res.redirect("/login");
     } catch {
       console.log("Error creating user")
