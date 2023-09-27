@@ -9,8 +9,6 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const initializePassport = require("./config/passport-config");
 
-let users = null
-
 app.use( express.static( "public" ) );
 app.use( express.static("views") );
 app.use( express.json() );
@@ -32,9 +30,8 @@ const uri = "mongodb+srv://" + process.env.NAME + ":" + process.env.PASSWORD + "
 console.log(uri);
 const client = new MongoClient( uri );
 
-
-
 let collection = null
+let users = null
 
 async function run() {
   await client.connect()
@@ -43,8 +40,8 @@ async function run() {
 
   initializePassport(
     passport, 
-    id => users.findOne({ _id: new ObjectId(id) }),
-    user => users.findOne({ email: user.email }) 
+    userEmail => users.findOne({ email: userEmail }), 
+    id => users.findOne({ _id: new ObjectId(id) })
   );
 
   // Check the connection
