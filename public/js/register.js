@@ -10,7 +10,7 @@ const register = async function () {
   console.log(username);
   console.log(password);
 
-  const response = await fetch("/register/create", {
+  const response = await fetch("/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

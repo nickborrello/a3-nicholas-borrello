@@ -3,13 +3,29 @@ const express = require( "express" ),
   { ObjectId } = require("mongodb"),
   app = express();
 const authRoutes = require("./routes/auth-routes");
-const passportSetup = require("./config/passport-setup");
-const jsSHA = require("jssha");
+const passport = require("passport");
+const flash = require("express-flash");
+const session = require("express-session");
+
+const initializePassport = require("./config/passport-config");
+initializePassport(
+  passport, 
+  email => users.find(user => user.email === email)
+);
 
 app.use( express.static( "public" ) );
 app.use( express.static("views") );
 app.use( express.json() );
 app.use(  '/auth', authRoutes );
+app.use(flash());
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}))
+app.use(passport.initialize());
+app.use(passport.session());
+app.set( "view engine", "ejs" );
 
 require('dotenv').config();
 
@@ -37,7 +53,7 @@ async function run() {
   })
 
   app.get("/", (req, res) => {
-    res.redirect("/login");
+    res.render("login.ejs");
   });
 
   app.get("/contacts", (req, res) => {
@@ -45,7 +61,6 @@ async function run() {
   });
 
   app.get("/login", (req, res) => {
-    res.sendFile(__dirname + "/views/login.html");
   });
 
   app.get("/register", (req, res) => {
@@ -122,18 +137,11 @@ async function run() {
   })
 
   // Check the login credentials
-  app.post('/login/attempt', async (req, res) => {
-    var pwdObj = req.body.password;
-    var hashObj = new jsSHA("SHA-256", "TEXT", {numRounds: 1});
-    hashObj.update(pwdObj);
-    var hash = hashObj.getHash("HEX");
-    pwdObj = hash;
-    const result = await collection.findOne({
-      username: req.body.username,
-      password: hash
-    })
-    res.json(result)
-  })
+  app.post('/login/attempt', passport.authenticate('local', {
+    successRedirect: '/contacts',
+    failureRedirect: '/login',
+    failureFlash: true
+  }))
 
   // Create a new user in the database
   app.post('/register/create', async (req, res) => {
