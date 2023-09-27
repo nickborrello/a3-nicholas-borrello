@@ -57,14 +57,11 @@ async function run() {
   });
 
   app.get("/contacts", (req, res) => {
-    res.sendFile(__dirname + "/views/contacts.html");
-  });
-
-  app.get("/login", (req, res) => {
+    res.render("contacts.ejs");
   });
 
   app.get("/register", (req, res) => {
-    res.sendFile(__dirname + "/views/register.html");
+    res.render("register.ejs");
   });
 
   // Get the database contacts table for a specific user
