@@ -40,8 +40,8 @@ async function run() {
 
   initializePassport(
     passport, 
-    userEmail => users.findOne({ email: userEmail }), 
-    id => users.findOne({ _id: new ObjectId(id) })
+    async userEmail => await users.findOne({ email: userEmail }), 
+    async id => await users.findOne({ _id: new ObjectId(id) })
   );
 
   // Check the connection
