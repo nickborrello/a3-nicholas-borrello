@@ -6,16 +6,15 @@ const authRoutes = require("./routes/auth-routes");
 const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
-
+const bcrypt = require("bcrypt");
 const initializePassport = require("./config/passport-config");
-initializePassport(
-  passport, 
-  email => users.find(user => user.email === email)
-);
+
+let users = null
 
 app.use( express.static( "public" ) );
 app.use( express.static("views") );
 app.use( express.json() );
+app.use( express.urlencoded({ extended:false }));
 app.use(  '/auth', authRoutes );
 app.use(flash());
 app.use(session({
@@ -36,12 +35,17 @@ const client = new MongoClient( uri );
 
 
 let collection = null
-let users = null
 
 async function run() {
   await client.connect()
   collection = await client.db("a3-nicholas-borrello").collection("Contacts")
   users = await client.db("a3-nicholas-borrello").collection("Users")
+
+  initializePassport(
+    passport, 
+    id => users.findOne({ _id: new ObjectId(id) }),
+    user => users.findOne({ email: user.email }) 
+  );
 
   // Check the connection
   app.use((req, res, next) => {
@@ -53,6 +57,10 @@ async function run() {
   })
 
   app.get("/", (req, res) => {
+    res.redirect("/login");
+  });
+
+  app.get("/login", (req, res) => {
     res.render("login.ejs");
   });
 
@@ -134,27 +142,23 @@ async function run() {
   })
 
   // Check the login credentials
-  app.post('/login/attempt', passport.authenticate('local', {
+  app.post('/login', passport.authenticate('local', {
     successRedirect: '/contacts',
     failureRedirect: '/login',
     failureFlash: true
   }))
 
   // Create a new user in the database
-  app.post('/register/create', async (req, res) => {
+  app.post('/register', async (req, res) => {
     // Hash the password
     try {
-      var pwdObj = req.body.password;
-      var hashObj = new jsSHA("SHA-256", "TEXT", {numRounds: 1});
-      hashObj.update(pwdObj);
-      var hash = hashObj.getHash("HEX");
-      pwdObj = hash;
+      const hashedPassword = await bcrypt.hash(req.body.password, 10)
       users.insertOne({
-        username: req.body.username,
-        password: pwdObj
+        email: req.body.email,
+        password: hashedPassword
       })
-      console.log("User created: "+req.body.username+" "+pwdObj)
-      res.redirect("/login");
+      console.log("User created: "+req.body.email+" "+hashedPassword)
+      res.redirect("/");
     } catch {
       console.log("Error creating user")
       res.redirect("/register");

@@ -3,7 +3,6 @@
   <head>
     <title>Contact List - CS4241</title>
     <meta charset="utf-8" />
-    <script src="js/login.js"></script>
     <link rel="stylesheet" href="css/main.css" />
     <link
       rel="stylesheet"
@@ -11,19 +10,29 @@
     />
   </head>
   <body>
-    <form id="loginForm">
+    <form id="loginForm" action="/login" method="POST">
       <h3>Login</h3>
       <hr />
       <div class="form-spacer">
-        <h5>Username</h5>
-        <input type="text" id="username" placeholder="Username" />
+        <h5>Email</h5>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="Email"
+          required
+        />
         <h5>Password</h5>
-        <input type="password" id="password" placeholder="Password" />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
         <hr />
-        <div class="form-section-1">
-          <button id="loginButton">Login</button>
-          <h4 id="registerButton"><a href="/register">Register</a></button>
-        </div>
+        <button type="submit" id="loginButton">Login</button>
+        <a href="/register">Register</a>
       </div>
     </form>
   </body>
