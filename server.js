@@ -38,7 +38,8 @@ async function run() {
   initializePassport(
     passport, 
     async userEmail => await users.findOne({ email: userEmail }), 
-    async id => await users.findOne({ _id: new ObjectId(id) })
+    async id => await users.findOne({ _id: new ObjectId(id) }),
+    users
   );
 
   // Check the connection
@@ -181,10 +182,7 @@ async function run() {
   }))
 
   app.get('/auth/google/redirect', 
-    passport.authenticate('google', {successRedirect: '/contacts', failureRedirect: '/login', failureFlash: true}),
-    function(req, res) {
-      res.redirect('/contacts');
-    }
+    passport.authenticate('google', {successRedirect: '/contacts', failureRedirect: '/login', failureFlash: true})
   );
 
   // Create a new user in the database
