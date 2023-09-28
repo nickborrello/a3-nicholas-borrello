@@ -1,5 +1,6 @@
 require('dotenv').config();
 const LocalStrategy = require("passport-local").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const bcrypt = require("bcrypt");
 
 function initialize( passport, getUserByEmail, getUserById ) {
@@ -20,14 +21,27 @@ function initialize( passport, getUserByEmail, getUserById ) {
             return done(e)
         }
     }
+
+    // Local Strategy
     passport.use(new LocalStrategy({ usernameField: "email" }, 
     authenticateUser))
-    passport.serializeUser((user, done) => { 
-        done(null, user._id) 
+
+    // Google Strategy
+    passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_SECRET,
+        callbackURL: "/auth/google/redirect"
+    }, () => {
+        console.log("Google strategy callback function fired")
     })
-    passport.deserializeUser(async (id, done) => { 
+    )
+
+    passport.serializeUser((user, done) => {
+        done(null, user._id)
+    })
+    passport.deserializeUser(async (id, done) => {
         const user = await getUserById(id);
-        return done(null, user) 
+        return done(null, user)
     })
 }
 
