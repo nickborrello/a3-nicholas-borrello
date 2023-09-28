@@ -110,6 +110,8 @@ Include a very brief summary of your project here. Images are encouraged, along 
 
 - **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
 - **Tech Achievement 2**: I hosted my website on Digital Ocean instead of Glitch. This mean that my site was faster and more reliable, but it was also more expensive and required more work to set up. Additionally my site was always running, as opposed to Glitch which shuts down after a period of inactivity.
+- **Tech Achievement 3**: I got 100% on all four lighthouse tests.
+https://pagespeed.web.dev/analysis/https-sea-turtle-app-iudlb-ondigitalocean-app-login/pvpvir0bxt?form_factor=desktop
 
 
 ### Design/Evaluation Achievements
