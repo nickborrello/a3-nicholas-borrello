@@ -3,7 +3,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const bcrypt = require("bcrypt");
 
-function initialize( passport, getUserByEmail, getUserById, users ) {
+function initialize( passport, getUserByEmail, getUserById, getUserByGoogleID, users ) {
     const authenticateUser = async (email, password, done) => {
         const user = await getUserByEmail(email)
         console.log(user);

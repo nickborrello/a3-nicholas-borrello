@@ -39,6 +39,7 @@ async function run() {
     passport, 
     async userEmail => await users.findOne({ email: userEmail }), 
     async id => await users.findOne({ _id: new ObjectId(id) }),
+    async GoogleID => await users.findOne({ GoogleID: GoogleID }),
     users
   );
 
@@ -178,7 +179,7 @@ async function run() {
 
   // Check google login
   app.get('/auth/google', passport.authenticate('google', {
-    scope: ['profile', 'email']
+    scope: ['profile']
   }))
 
   app.get('/auth/google/redirect', 
