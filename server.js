@@ -2,7 +2,6 @@ const express = require( "express" ),
   { MongoClient } = require("mongodb"),
   { ObjectId } = require("mongodb"),
   app = express();
-const authRoutes = require("./routes/auth-routes");
 const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
@@ -13,7 +12,6 @@ app.use( express.static( "public" ) );
 app.use( express.static("views") );
 app.use( express.json() );
 app.use( express.urlencoded({ extended:false }));
-app.use(  '/auth', authRoutes );
 app.use(flash());
 app.use(session({
   secret: process.env.SESSION_SECRET,

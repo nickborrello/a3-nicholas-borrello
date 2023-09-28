@@ -18,7 +18,7 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   width: auto;
-  height: fit-content;
+  height: auto;
   z-index: 100;
   text-align: left;
   padding:10px;
@@ -30,6 +30,14 @@ body {
   align-items: flex-start;
   width: 100%;
   gap: 10px;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: auto;
 }
 
 .popup-form img {
