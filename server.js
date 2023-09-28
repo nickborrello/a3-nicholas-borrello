@@ -174,16 +174,16 @@ async function run() {
   });
 
 
-  // // Check google login
-  // app.post('/auth/google', passport.authenticate('google', {
-  //   scope: ['profile', 'email']
-  // }))
+  // Check google login
+  app.post('/auth/google', passport.authenticate('google', {
+    scope: ['profile', 'email']
+  }))
 
-  // app.get('/auth/google/callback', passport.authenticate('google', {
-  //   successRedirect: '/contacts',
-  //   failureRedirect: '/login',
-  //   failureFlash: true
-  // }));
+  app.get('/auth/google/callback', passport.authenticate('google', {
+    successRedirect: '/contacts',
+    failureRedirect: '/login',
+    failureFlash: true
+  }));
 
   // Create a new user in the database
   app.post('/register', checkNotAuthenticated, async (req, res) => {
