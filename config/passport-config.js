@@ -33,24 +33,24 @@ function initialize( passport, getUserByEmail, getUserById, users ) {
         clientSecret: process.env.GOOGLE_SECRET,
         scope: ['profile', 'email'],
         state: true
-    }, async ( accessToken, refreshToken, profile, email, done ) => {
-        const user = await getUserByEmail(email)
+    }, async ( accessToken, refreshToken, profile, done ) => {
+        const user = await getUserByGoogleID(profile.id)
         // If a user with this email does not exist, create one
         if(user == null) {
             const hashedPassword = await bcrypt.hash("password", 10)
             const newUser = {
-                email: email,
-                name: displayName,
+                GoogleID: profile.id,
+                name: profile.displayName,
                 password: hashedPassword,
                 contacts: []
             }
             await users.insertOne(newUser)
-            console.log("User created: "+email+" "+hashedPassword)
-            return done(null, await getUserByEmail(email))
+            console.log("User created: "+profile.displayName+" "+hashedPassword)
+            return done(null, await getUserByGoogleID(profile.id))
         }
         // Otherwise, return the user
         else {
-            console.log("User found: "+email)
+            console.log("User found: "+profile.displayName)
             return done(null, user)
         }
     })
