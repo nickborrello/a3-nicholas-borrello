@@ -28,11 +28,12 @@ function initialize( passport, getUserByEmail, getUserById ) {
 
     // Google Strategy
     passport.use(new GoogleStrategy({
+        callbackURL: "/auth/google/redirect",
         clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: "/auth/google/redirect"
-    }, () => {
+        clientSecret: process.env.GOOGLE_SECRET
+    }, ( accessToken, refreshToken, profile, done ) => {
         console.log("Google strategy callback function fired")
+        console.log(profile)
     })
     )
 
