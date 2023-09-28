@@ -31,9 +31,25 @@ function initialize( passport, getUserByEmail, getUserById ) {
         callbackURL: "/auth/google/redirect",
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_SECRET
-    }, ( accessToken, refreshToken, profile, done ) => {
-        console.log("Google strategy callback function fired")
-        console.log(profile)
+    }, async ( accessToken, refreshToken, profile, done ) => {
+        const user = await getUserByEmail(profile.getEmail())
+        // If a user with this email does not exist, create one
+        if(user == null) {
+            const hashedPassword = await bcrypt.hash("password", 10)
+            const newUser = {
+                email: profile.getEmail(),
+                password: hashedPassword,
+                contacts: []
+            }
+            users.insertOne(newUser)
+            console.log("User created: "+profile.getEmail()+" "+hashedPassword)
+            return done(null, newUser)
+        }
+        // Otherwise, return the user
+        else {
+            console.log("User found: "+profile.getEmail())
+            return done(null, user)
+        }
     })
     )
 
