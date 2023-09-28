@@ -190,7 +190,7 @@ async function run() {
     scope: ['profile', 'email']
   }))
 
-  app.get('/auth/google/callback', passport.authenticate('google', {
+  app.get('/auth/google/redirect', passport.authenticate('google', {
     successRedirect: '/contacts',
     failureRedirect: '/login',
     failureFlash: true
