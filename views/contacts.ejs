@@ -22,9 +22,11 @@
     <div id="parent-div">
       <div id="contactHeader" class="top-bar">
         <h1>Contacts</h1>
-        <div>
+        <div class="flex-row">
           <button id="createButton" class="createButton">Create Contact</button>
-          <button id="logoutButton" class="createButton">Logout</button>
+          <form action="/logout?_method=DELETE" method="POST">
+            <button type="submit" class="logoutButton">Logout</button>
+          </form>
         </div>
       </div>
       <div id="contactList" class="contact-list"></div>
@@ -54,10 +56,44 @@
         <input type="text" id="zipCode" placeholder="Zip" />
         <hr />
         <div class="form-section-1">
-          <button id="cancelButton">Cancel</button>
           <button id="submitButton" class="createButton">Create</button>
+          <a id="cancelButton" href="/contacts" class="createButton">Cancel</a>
         </div>
       </div>
+    </form>
+    <form id="editForm" class="hidden popup-form">
+      <h3>Edit Contact</h3>
+      <hr />
+      <div class="form-spacer">
+        <div class="flex-row">
+          <div>
+            <h5>Name</h5>
+            <input type="text" name="editFirstName" id="editFirstName" placeholder="First Name" />
+            <input type="text" name="editLastName" id="editLastName" placeholder="Last Name" />
+          </div>
+          <div>
+            <h5>Contact Info</h5>
+            <input type="text" name="editPhone" id="editPhone" placeholder="Phone" />
+            <input type="text" name="editEmail" id="editEmail" placeholder="Email" />
+          </div>
+        </div>
+        <h5>Date of Birth</h5>
+        <input type="date" name="editDateOfBirth" id="editDateOfBirth" placeholder="Birthday" />
+        <h5>Address</h5>
+        <input
+          type="text"
+          name="editStreetAddress"
+          id="editStreetAddress"
+          placeholder="Street Address"
+        />
+        <input type="text" name="editCity" id="editCity" placeholder="City" />
+        <input type="text" name="editState" id="editState" placeholder="State" />
+        <input type="text" name="editZipCode" id="editZipCode" placeholder="Zip" />
+        <hr />
+        <div class="form-section-1">
+          <button id="editSubmitButton" class="createButton">Save</button>
+          <a id="cancelEditButton" href="/contacts" class="createButton">Cancel</a>
+        </div>
     </form>
     <template id="contact-card">
       <div class="contact-card">

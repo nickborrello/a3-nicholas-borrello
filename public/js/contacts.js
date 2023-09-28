@@ -2,9 +2,10 @@ window.onload = function () {
   // On load update the table
   updateContacts();
   initButtons();
-  hideForm();
 
 };
+
+var storedContacts = [];
 
 const updateContacts = async function () {
 
@@ -14,9 +15,8 @@ const updateContacts = async function () {
   });
 
   const contacts = await response.json();
-
-  console.log(contacts);
-
+  storedContacts = contacts;
+  
   // Clear the list
   const list = document.getElementById("contactList");
   list.innerHTML = "";
@@ -37,12 +37,12 @@ const updateContacts = async function () {
     content.getElementById("deleteButton").onclick = function() {removeContact(contacts[i]._id)};
     let newChild = content.cloneNode(true);
     newChild.getElementById("deleteButton").onclick = function() {removeContact(contacts[i]._id)};
-    newChild.getElementById("editButton").onclick = function() {editContact(contacts[i]._id)};
+    newChild.getElementById("editButton").onclick = function() {showEditForm(contacts[i])};
     document.getElementById("contactList").appendChild(newChild);
   }
 };
 
-const addContact = async function () {
+async function addContact() {
   // Get the data from the form
   const firstName = document.getElementById("firstName").value;
   const lastName = document.getElementById("lastName").value;
@@ -81,6 +81,39 @@ async function removeContact(id) {
   updateContacts();
 }
 
+async function showEditForm(contact) {
+
+  // Update the form inputs
+  document.getElementById("editFirstName").value = contact.firstName;
+  document.getElementById("editLastName").value = contact.lastName;
+  document.getElementById("editPhone").value = contact.phone;
+  document.getElementById("editEmail").value = contact.email;
+  document.getElementById("editDateOfBirth").value = contact.dateOfBirth;
+  document.getElementById("editStreetAddress").value = contact.streetAddress;
+  document.getElementById("editCity").value = contact.city;
+  document.getElementById("editState").value = contact.state;
+  document.getElementById("editZipCode").value = contact.zipCode;
+  document.getElementById("editSubmitButton").onclick = function() {editContact(contact._id)};
+
+  // Show the form
+  const form = document.getElementById("editForm");
+  form.classList.remove("hidden");
+  // blur the contact list
+  const list = document.getElementById("contactList");
+  list.classList.add("blur-page");
+
+}
+
+const editContact = async function (id) {
+  const response = await fetch("/edit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ _id: id, editFirstName: document.getElementById("editFirstName").value, editLastName: document.getElementById("editLastName").value, editPhone: document.getElementById("editPhone").value, editEmail: document.getElementById("editEmail").value, editDateOfBirth: document.getElementById("editDateOfBirth").value, editStreetAddress: document.getElementById("editStreetAddress").value, editCity: document.getElementById("editCity").value, editState: document.getElementById("editState").value, editZipCode: document.getElementById("editZipCode").value }),
+  });
+}
+
 const hideForm = function () {
   // Show the create contact button
   const button = document.getElementById("createButton");
@@ -117,10 +150,6 @@ const initButtons = function () {
   const addButton = document.getElementById("createButton");
   addButton.onclick = showForm;
 
-  const cancelButton = document.getElementById("cancelButton");
-  cancelButton.onclick = hideForm;
-
   const submitButton = document.getElementById("submitButton");
   submitButton.onclick = addContact;
-
 }
