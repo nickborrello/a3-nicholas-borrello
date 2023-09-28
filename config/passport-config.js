@@ -31,7 +31,7 @@ function initialize( passport, getUserByEmail, getUserById, users ) {
         callbackURL: "/auth/google/redirect",
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_SECRET,
-        scope: ['profile', 'email'],
+        scope: ['profile'],
         state: true
     }, async ( accessToken, refreshToken, profile, done ) => {
         const user = await getUserByGoogleID(profile.id)
