@@ -180,11 +180,12 @@ async function run() {
     scope: ['profile']
   }))
 
-  app.get('/auth/google/redirect', passport.authenticate('google', {
-    successRedirect: '/contacts',
-    failureRedirect: '/login',
-    failureFlash: true
-  }));
+  app.get('/auth/google/redirect', 
+    passport.authenticate('google', {successRedirect: '/contacts', failureRedirect: '/login', failureFlash: true}),
+    function(req, res) {
+      res.redirect('/contacts');
+    }
+  );
 
   // Create a new user in the database
   app.post('/register', checkNotAuthenticated, async (req, res) => {
