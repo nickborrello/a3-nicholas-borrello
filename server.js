@@ -174,6 +174,7 @@ async function run() {
     failureFlash: true
   }))
 
+  // Logout the user
   app.delete('/logout', (req, res, next) => {
     req.logOut((err) => {
       if (err) {
