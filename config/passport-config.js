@@ -31,7 +31,7 @@ function initialize( passport, getUserByEmail, getUserById, users ) {
         callbackURL: "/auth/google/redirect",
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_SECRET,
-        scope: ['profile'],
+        scope: ['profile', 'email'],
         state: true
     }, async ( accessToken, refreshToken, profile, done ) => {
         const user = await getUserByEmail(profile.email)
@@ -40,12 +40,13 @@ function initialize( passport, getUserByEmail, getUserById, users ) {
             const hashedPassword = await bcrypt.hash("password", 10)
             const newUser = {
                 email: profile.email,
+                name: profile.displayName,
                 password: hashedPassword,
                 contacts: []
             }
-            users.insertOne(newUser)
+            await users.insertOne(newUser)
             console.log("User created: "+profile.email+" "+hashedPassword)
-            return done(null, newUser)
+            return done(null, await getUserByEmail(profile.email))
         }
         // Otherwise, return the user
         else {

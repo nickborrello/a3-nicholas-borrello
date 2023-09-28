@@ -178,7 +178,7 @@ async function run() {
 
   // Check google login
   app.get('/auth/google', passport.authenticate('google', {
-    scope: ['profile']
+    scope: ['profile', 'email']
   }))
 
   app.get('/auth/google/redirect', 
