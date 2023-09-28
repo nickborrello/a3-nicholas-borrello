@@ -109,6 +109,8 @@ Include a very brief summary of your project here. Images are encouraged, along 
 ## Technical Achievements
 
 - **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+- **Tech Achievement 2**: I hosted my website on Digital Ocean instead of Glitch. This mean that my site was faster and more reliable, but it was also more expensive and required more work to set up. Additionally my site was always running, as opposed to Glitch which shuts down after a period of inactivity.
+
 
 ### Design/Evaluation Achievements
 
